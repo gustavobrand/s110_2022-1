@@ -1,0 +1,56 @@
+---
+- hosts: remote
+  become: yes
+  become_user: root
+  gather_facts: no
+  
+  vars:
+    - gitrepo: https://github.com/s085sem201802/aula-com-docker-e-git-montando-um-ambiente-gugabrand
+    - gitdest: /var/www/html
+    
+  tasks:
+    - name: Instalar Git e Apache2
+      apt:
+        pkg:
+        - git
+        - apache2
+      notify:
+      - Iniciar Apache2
+      register: apacheinstall
+
+    - name: Status da instalacao de pacotes
+      ansible.builtin.debug:
+        var: apacheinstall
+        verbosity: 1
+    
+    - name: Clonar repositorio do git
+      git:
+        repo: '{{ gitrepo }}'
+        dest: '{{ gitdest }}'
+      when: apacheinstall is success
+      register: gitclone
+      
+    - name: Status da clonagem do repositorio
+      ansible.builtin.debug:
+        var: gitclone
+        verbosity: 1
+    
+    - name: Criar soft link para inde.html
+      file:
+        src: '{{ gitdest }}/inde.html'
+        dest: '{{ gitdest }}/index.html'
+        state: link
+      notify:
+      - Reiniciar Apache2
+      when: gitclone is success
+
+  handlers:
+    - name: Iniciar Apache2
+      service:
+        name: apache2
+        state: started
+        
+    - name: Reiniciar Apache2
+      service:
+        name: apache2
+        state: restarted

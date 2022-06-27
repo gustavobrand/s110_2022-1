@@ -1,0 +1,61 @@
+---
+- hosts: remote
+  become: yes
+  become_user: root
+  gather_facts: no
+  tasks:
+  
+    - name: Instalar Git e Apache2
+      apt:
+        pkg:
+        - git
+        - apache2
+      notify:
+      - Iniciar Apache2
+
+    # - name: Instalar Apache2
+    #   apt:
+    #     name: apache2
+    #     state: present
+        
+    # - name: Instalar Git
+    #   apt:
+    #     name: git
+    #     state: present
+        
+    - name: Clonar repositorio do git
+      git:
+        repo: 'https://github.com/s085sem201802/aula-com-docker-e-git-montando-um-ambiente-gugabrand'
+        dest: /var/www/html/
+    
+    - name: Criar soft link para inde.html
+      file:
+        src: /var/www/html/inde.html
+        dest: /var/www/html/index.html
+        state: link
+      notify:
+      - Reiniciar Apache2
+        
+    # - name: Copiando inde.html para index.html
+    #   copy:
+    #     src: /var/www/html/inde.html
+    #     dest: /var/www/html/index.html
+        
+    # - name: Removendo inde.html
+    #   file:
+    #     path: /var/www/html/inde.html
+    #     state: absent
+        
+    # - name: Renomeando inde.html para index.html
+    #   command: mv /var/www/html/inde.html /var/www/html/index.html
+    
+  handlers:
+    - name: Iniciar Apache2
+      service:
+        name: apache2
+        state: started
+        
+    - name: Reiniciar Apache2
+      service:
+        name: apache2
+        state: restarted
