@@ -1,0 +1,40 @@
+---
+# Examplo mostrando docker com ansible
+- hosts: containers
+  connection: docker
+
+  vars:
+    - user1: admin
+    - user2: deploy
+    
+    # Saida do comando "mkpasswd --method=sha-512" para a senha abcd1234
+    - pass1: $6$Lw4FYtIUy.Dr50P$y38MkvAvcHwRdXR6yZ64Fkr/3xuSevrL68lKLd/YELsNAt7zCqVSrKBr0oSogZJO1o/MSt4VEsGrktXlZ8ur..
+    # Saida do comando "mkpasswd --method=sha-512" para a senha qwer7890
+    - pass2: $6$xRzOaj9/aLY$aVYAgqhpxR0GkzlTQKXrSKU4nmn4.i9tTxWIPSeGuxCuJYCOH2eacyoeAjszZoCY2wAAmjNP5VVYZKXhfmYTr/    
+    
+  tasks:
+  
+    - name: Adicionar usuario '{{ user1 }}'
+      user:
+        name: '{{ user1 }}'
+        password: '{{ pass1 }}'
+    
+    - name: Adicionar usuario '{{ user2 }}'
+      user:
+        name: '{{ user2 }}'
+        password: '{{ pass2 }}'
+
+    - name: Criar o diretorio /testativ06t2 
+      file:
+        path: /testativ06t2
+        state: directory
+  
+    - name: Instalar o python
+      package:
+        name: python3
+        state: present
+        
+    - name: Instalar o git
+      package:
+        name: git
+        state: present

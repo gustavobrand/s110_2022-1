@@ -1,0 +1,33 @@
+---
+# Examplo mostrando docker com ansible
+- hosts: hosts
+
+  vars:
+    - dockerfilepath: /home/ubuntu/environment/ansibletest/containers
+    - imagename: testeansibledocker
+    - containername1: conttest01
+    - containername2: conttest02
+    - containername3: conttest03
+  
+  tasks:
+    - name: Build da imagem 
+      docker_image:
+        build:
+          path: '{{ dockerfilepath }}'
+        name: '{{ imagename }}'
+        source: build
+        
+    - name: Criar o container 1
+      docker_container:
+        name: '{{ containername1 }}'
+        image: '{{ imagename }}'
+        
+    - name: Criar o container 2
+      docker_container:
+        name: '{{ containername2 }}'
+        image: '{{ imagename }}'
+        
+    - name: Criar o container 3
+      docker_container:
+        name: '{{ containername3 }}'
+        image: '{{ imagename }}'
