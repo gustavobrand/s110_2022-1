@@ -1,0 +1,9 @@
+[local]
+127.0.0.1
+
+[remote]
+172.31.47.2
+
+[containers]
+conttest01
+conttest02

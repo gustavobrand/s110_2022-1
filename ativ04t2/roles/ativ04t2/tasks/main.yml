@@ -1,0 +1,40 @@
+---
+# tasks file for ativ04t2
+- name: Adicionar usuario '{{ user1 }}'
+  user:
+    name: '{{ user1 }}'
+    password: '{{ pass1 }}'
+
+- name: Adicionar usuario '{{ user2 }}'
+  user:
+    name: '{{ user2 }}'
+    password: '{{ pass2 }}'
+
+# Localizar em /var/log arquivos que tenham mais de 90 dias,
+# e tamanho maior que 100MB.
+
+- name: Buscando arquivos com mais de 90 dias e >100Mb
+  find:
+    paths: /var/log
+    # patterns: '*.log'
+    file_type: file
+    age: -90d
+    # size: 10m
+    size: 100m
+    recurse: yes
+  register: outputfind
+    
+- debug: var=item.path
+  with_items: "{{ outputfind.files }}"
+
+- name: Instalar o pacote Apache2 na sua ultima versao
+  package:
+    name:
+      - apache2
+    state: latest
+
+- name: Testar se o host retorna na porta 80
+  uri:
+    url: http://{{ ansible_hostname }}/index.html
+    status_code: 200
+

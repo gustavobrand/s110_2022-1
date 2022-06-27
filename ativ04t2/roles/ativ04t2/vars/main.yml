@@ -1,0 +1,9 @@
+---
+# vars file for ativ04t2
+user1: tester
+user2: auditoria
+
+# Saida do comando "mkpasswd --method=sha-512" para a senha abcd1234
+pass1: $6$Lw4FYtIUy.Dr50P$y38MkvAvcHwRdXR6yZ64Fkr/3xuSevrL68lKLd/YELsNAt7zCqVSrKBr0oSogZJO1o/MSt4VEsGrktXlZ8ur..
+# Saida do comando "mkpasswd --method=sha-512" para a senha qwer7890
+pass2: $6$xRzOaj9/aLY$aVYAgqhpxR0GkzlTQKXrSKU4nmn4.i9tTxWIPSeGuxCuJYCOH2eacyoeAjszZoCY2wAAmjNP5VVYZKXhfmYTr/

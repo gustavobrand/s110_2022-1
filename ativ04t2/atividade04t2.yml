@@ -1,0 +1,8 @@
+---
+- hosts: remote
+  become: yes
+  become_user: root
+  # gather_facts: no
+  roles:
+    # - setupambiente
+    - ativ04t2
