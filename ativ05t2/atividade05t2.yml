@@ -1,0 +1,7 @@
+---
+- hosts: remote
+  become: yes
+  become_user: root
+  # gather_facts: no
+  roles:
+    - ativ05t2

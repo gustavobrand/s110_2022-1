@@ -1,0 +1,5 @@
+---
+# vars file for atividade03
+gitrepo: https://github.com/s085sem201802/aula-com-docker-e-git-montando-um-ambiente-gugabrand
+gitdest: /var/www/html
+archivedest: /var/www

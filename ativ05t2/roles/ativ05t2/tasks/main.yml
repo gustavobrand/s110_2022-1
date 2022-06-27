@@ -1,0 +1,36 @@
+---
+# tasks file for atividade03
+- name: Instalar Apache2
+  package:
+    name:
+      - apache2
+    state: latest
+  notify:
+  - Iniciar Apache2
+
+- name: Remover '{{ gitdest }}'
+  file:
+    path: '{{ gitdest }}'
+    state: absent
+    
+- name: Clonar repositorio do git
+  git:
+    repo: '{{ gitrepo }}'
+    dest: '{{ gitdest }}'
+
+- name: Criar soft link para inde.html
+  file:
+    src: '{{ gitdest }}/inde.html'
+    dest: '{{ gitdest }}/index.html'
+    state: link
+
+- name: Criar o arquivo html.tar.gz
+  archive:
+    path: '{{ gitdest }}'
+    dest: '{{ archivedest }}/html.tar.gz'
+    format: gz
+
+- name: Testar se o host retorna na porta 80
+  uri:
+    url: http://{{ ansible_hostname }}/index.html
+    status_code: 200
